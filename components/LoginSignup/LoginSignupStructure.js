@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik } from "formik";
 import styles from "./LoginSignupStyle";
+import { onAuthStateChanged } from "firebase/auth";
+import { FIREBASE_AUTH } from "../../firebase/firebaseconfig";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { loginSchema } from "./validation/validationSchemas";
 import { handleLogin, toggleMode } from "./LoginSignupLogic";
+import { setUserId } from "../../redux/actions/userActions";
+import { setExpenseDocId } from "../../redux/actions/expenseActions";
 import { View, TextInput, TouchableOpacity, Text, Image } from "react-native";
 
 const LoginSignupStructure = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [isLoginMode, setIsLoginMode] = React.useState(true);
+
 
   return (
     <Formik

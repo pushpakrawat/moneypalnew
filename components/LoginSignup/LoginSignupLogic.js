@@ -11,6 +11,7 @@ const handleLogin = async (values, isLoginMode, dispatch, navigation) => {
   const { email, password } = values;
   try {
     if (isLoginMode) {
+      console.log("LoginMode: ", isLoginMode)
       const userCredential = await signInWithEmailAndPassword(
         FIREBASE_AUTH,
         email,

@@ -3,14 +3,14 @@ import { View, ScrollView, FlatList } from "react-native";
 import MonthYearSelectorStructure from "../../components/MonthYearSelector/MonthYearSelectorStructure";
 import ExpenseListStructure from "../../components/ExpenseList/ExpenseListStructure";
 import ExpenseSummary from "../../components/smallComponents/ExpenseSummary";
-import styles from "./HomeStyle";
 import { BackHandler } from "react-native";
+import { useSelector } from "react-redux";
 import HSgraph from "../../components/smallComponents/HSgraph";
 import useDynamicStyles from "./HomeStyle"; // Import your dynamic styles
 import NotificationsComponent from "../../components/notifications/notifications";
 
 const HomeStructure = () => {
-  // const [showHSgraph, setShowHSgraph] = useState(false);
+  const userId = useSelector((state) => state.user.userId);
 
   useEffect(() => {
     const backAction = () => {
@@ -37,7 +37,7 @@ const HomeStructure = () => {
 
   return (
     <>
-      <NotificationsComponent />
+       {userId && <NotificationsComponent />}
       <FlatList
         style={dynamicStyles.container} // Apply the dynamic styles to set the background color
         data={data}
