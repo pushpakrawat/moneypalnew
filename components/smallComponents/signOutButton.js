@@ -17,7 +17,7 @@ const LogoutButton = () => {
     const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, async (user) => {
       if (!user) {
         // User has logged out, clear user authentication token
-        await AsyncStorage.removeItem('userToken');
+        await AsyncStorage.removeItem('authCredentials');
       }
     });
     
