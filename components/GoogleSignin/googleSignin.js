@@ -8,6 +8,8 @@ import { setUserId } from "../../redux/actions/userActions";
 import { setExpenseDocId } from "../../redux/actions/expenseActions";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FIREBASE_DB } from '../../firebase/firebaseconfig';
+import { doc, setDoc } from 'firebase/firestore';
 
 GoogleSignin.configure({
   webClientId: '446258025611-engbllr6j6egsktst9rl0tn9rj3rn94k.apps.googleusercontent.com',
@@ -17,7 +19,7 @@ async function onGoogleButtonPress() {
   try {
     // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    
+
     // Sign in with Google
     const { idToken, user } = await GoogleSignin.signIn();
     console.log('Google Sign-In Response:', { idToken, user });
@@ -32,7 +34,7 @@ async function onGoogleButtonPress() {
     }
 
     await AsyncStorage.setItem('authCredentials', JSON.stringify({ idToken, accessToken }));
-    
+
     // Create a Google credential with the token
     const googleCredential = auth.GoogleAuthProvider.credential(idToken, accessToken);
 
@@ -42,6 +44,10 @@ async function onGoogleButtonPress() {
     // Access the user's UID from the result
     const userId = signInResult.user.uid;
     console.log('Signed in with Google! User UID:', userId);
+
+    // Set themeMode to 'light' in Firestore
+    const userDocRef = doc(FIREBASE_DB, 'users', userId);
+    await setDoc(userDocRef, { themeMode: 'light' }, { merge: true });
 
     return userId;
   } catch (error) {
@@ -59,7 +65,7 @@ export function GoogleSignIn() {
     try {
       const uid = await onGoogleButtonPress();
       console.log('Signed in with Google! User UID:', uid);
-      dispatch(setUserId(uid)); 
+      dispatch(setUserId(uid));
       dispatch(setExpenseDocId(uid));
       setUserUId(uid);
       navigation.navigate('TabNavigator');
@@ -71,7 +77,7 @@ export function GoogleSignIn() {
 
   return (
     <TouchableOpacity style={styles.container} onPress={handleGoogleSignIn}>
-      <GoogleSignInButton/>
+      <GoogleSignInButton />
     </TouchableOpacity>
   );
 }
