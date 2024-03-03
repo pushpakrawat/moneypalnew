@@ -7,6 +7,7 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { setUserId } from "../../redux/actions/userActions";
 import { setExpenseDocId } from "../../redux/actions/expenseActions";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 GoogleSignin.configure({
   webClientId: '446258025611-engbllr6j6egsktst9rl0tn9rj3rn94k.apps.googleusercontent.com',
@@ -17,17 +18,30 @@ async function onGoogleButtonPress() {
     // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
     
-    // Get the users ID token and user information
+    // Sign in with Google
     const { idToken, user } = await GoogleSignin.signIn();
+    console.log('Google Sign-In Response:', { idToken, user });
 
+    // Get the access token separately
+    const { accessToken } = await GoogleSignin.getTokens();
+    console.log('Access Token:', accessToken);
+
+    // Ensure that both idToken and accessToken are available
+    if (!idToken || !accessToken) {
+      throw new Error("Missing idToken or accessToken");
+    }
+
+    await AsyncStorage.setItem('authCredentials', JSON.stringify({ idToken, accessToken }));
+    
     // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken, accessToken);
 
     // Sign-in the user with the credential
     const signInResult = await auth().signInWithCredential(googleCredential);
 
     // Access the user's UID from the result
     const userId = signInResult.user.uid;
+    console.log('Signed in with Google! User UID:', userId);
 
     return userId;
   } catch (error) {
