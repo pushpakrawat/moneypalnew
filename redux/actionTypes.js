@@ -30,6 +30,7 @@ export const SET_USER_ID = 'SET_USER_ID';
 
 
 export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
+export const SET_LOGGED_STATUS = 'SET_LOGGED_STATUS';
 
 // App Action Types
 

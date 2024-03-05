@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Button, Alert } from 'react-native';
-import { setUserId } from "../../redux/actions/userActions";
+import { setUserId, setLoggedStatus } from "../../redux/actions/userActions";
 import { setExpenseDocId } from "../../redux/actions/expenseActions";
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { FIREBASE_AUTH } from '../../firebase/firebaseconfig'; 
@@ -27,6 +27,7 @@ const LogoutButton = () => {
   const handleLogout = async () => {
     try {
       await signOut(FIREBASE_AUTH); // Sign out the user using Firebase Auth instance
+      dispatch(setLoggedStatus(false));
       dispatch(setUserId(null));
       dispatch(setExpenseDocId(null));
       navigation.navigate("AuthStackNavigator");

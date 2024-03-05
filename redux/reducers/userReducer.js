@@ -4,7 +4,8 @@ import {
   SET_PASSWORD,
   REGISTER_USER_SUCCESS,
   SET_USER_ID,
-  UPDATE_DEVICE_TOKEN
+  UPDATE_DEVICE_TOKEN,
+  SET_LOGGED_STATUS
 } from "../actionTypes";
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
   email: "",
   password: "",
   isRegistered: false,
+  isLoggedin: false,
   userId: null,
   deviceTokenAllowance: null,
 };
@@ -54,7 +56,13 @@ const userReducer = (state = initialState, action) => {
         ...state,
         deviceToken: action.payload,
       };
-      
+
+    case SET_LOGGED_STATUS:
+      return {
+        ...state,
+        isLoggedin: action.payload,
+      };
+
     default:
       return state;
   }

@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { GoogleAuthProvider, signInWithCredential, getAuth } from "@react-native-firebase/auth"; // Import Firebase auth functions
 import { loginSchema } from "./validation/validationSchemas";
 import { handleLogin, toggleMode } from "./LoginSignupLogic";
-import { setUserId } from "../../redux/actions/userActions";
+import { setUserId, setLoggedStatus } from "../../redux/actions/userActions";
 import { setExpenseDocId } from "../../redux/actions/expenseActions";
 import { View, TextInput, TouchableOpacity, Text, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -38,6 +38,7 @@ const LoginSignupStructure = () => {
             const user = userCredential.user;
 
             // Dispatch actions to update user state
+            dispatch(setLoggedStatus(true));
             dispatch(setUserId(user.uid));
             dispatch(setExpenseDocId(user.uid));
 

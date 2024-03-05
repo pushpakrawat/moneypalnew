@@ -4,7 +4,7 @@ import auth from '@react-native-firebase/auth';
 import GoogleSignInButton from './GoogleSignInButton';
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { setUserId } from "../../redux/actions/userActions";
+import { setUserId, setLoggedStatus } from "../../redux/actions/userActions";
 import { setExpenseDocId } from "../../redux/actions/expenseActions";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -65,6 +65,7 @@ export function GoogleSignIn() {
     try {
       const uid = await onGoogleButtonPress();
       console.log('Signed in with Google! User UID:', uid);
+      dispatch(setLoggedStatus(true));
       dispatch(setUserId(uid));
       dispatch(setExpenseDocId(uid));
       setUserUId(uid);

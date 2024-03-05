@@ -4,7 +4,8 @@ import {
     SET_PASSWORD,
     REGISTER_USER_SUCCESS,
     SET_USER_ID,
-    UPDATE_DEVICE_TOKEN
+    UPDATE_DEVICE_TOKEN,
+    SET_LOGGED_STATUS
   } from "../actionTypes"; 
   
 export const setName = (name) => {
@@ -44,5 +45,12 @@ export const updateDeviceToken = (token) => {
   return {
     type: UPDATE_DEVICE_TOKEN,
     payload: token,
+  };
+};
+
+export const setLoggedStatus = (isLoggedIn) => {
+  return {
+    type: SET_LOGGED_STATUS,
+    payload: isLoggedIn,
   };
 };
